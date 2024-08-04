@@ -1,0 +1,27 @@
+{
+  "name": "lf-in-browser",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "prepare": "nearleyc src/lib/grammar.ne > src/lib/grammar.ts",
+    "dev": "yarn prepare && vite",
+    "build": "yarn prepare && vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@lezer/common": "^1.0.0",
+    "@popperjs/core": "^2.11.8",
+    "@types/moo": "^0.5.9",
+    "bootstrap": "^5.3.3",
+    "codemirror": "^6.0.1",
+    "nearley": "^2.20.1",
+    "vue": "^3.4.35"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.4",
+    "vue-tsc": "^2.0.24"
+  }
+}
