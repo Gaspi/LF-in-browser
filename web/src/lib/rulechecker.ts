@@ -1,13 +1,13 @@
-import { fail } from './utils.ts'
-import { pp_term, pp_context } from './pp.ts'
+import { fail } from './utils.ts';
+import { pp_term, pp_context } from './pp.ts';
 import {
   TermVar, TermMVar, Term, Rule,
   Knd, All, Lam, App, Var, MVar,
   get_head, subst, shift, equals, same_head, same_head_with_depth
-} from './term.ts'
-import { Ctxt, Ctx, extend, get_term, find_subterm, is_closed } from './context.ts'
-import { Environment } from './env.ts'
-
+} from './term.ts';
+import { Ctxt, Ctx, extend, get_term, find_subterm, is_closed } from './context.ts';
+import { Environment } from './env.ts';
+import { ReductionEngine } from './red.ts';
 
 // Returns [term] where each free variables instance x#0 in turned into a meta-variable
 // whose name !3 corresponds to its DeBruijn *level*. (assuming ctx_size=4 in the example)
@@ -314,7 +314,7 @@ class AssumptionSet {
 }
 
 // Rule checking entry point
-class RuleChecker {
+export class RuleChecker {
   red : ReductionEngine;
   env : Environment;
 

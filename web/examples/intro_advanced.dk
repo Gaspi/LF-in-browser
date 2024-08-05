@@ -1,0 +1,111 @@
+// Oh you want to know more ?
+// You'll find below more advanced features of this Dedukti type checker
+
+// Basics signature from intro.dk
+Nat : Type;
+z : Nat;
+s : Nat -> Nat;
+
+Ty: Type;
+arr: Ty -> Ty -> Ty;
+T: Ty -> Type;
+app: a:Ty -> b:Ty ->  T (arr a b) -> (T a -> T b);
+lam: a:Ty -> b:Ty -> (T a -> T b) ->  T (arr a b);
+
+// `(x:T := d) => t`  is an alias for  `( (x:T=>t) d )`
+#EVAL (x:Nat:=s z)=>s x;
+
+// Dedukti supports non-linearity
+// We recommend to avoid this feature if possible as it quickly leads
+// to loss of confluence, product compatibility and subject reduction
+max: Nat -> Nat -> Nat;
+: max n n --> n;
+#CHECK x : Nat |- max x x     == x;
+#CHECK x : Nat |- max x (s x) != x;
+
+// Note that meta variable n[] is the same as n.
+min: Nat -> Nat -> Nat;
+: min n[] n --> n;
+#CHECK x : Nat |- min x x     == x;
+#CHECK x : Nat |- min x (s x) != x;
+
+// A meta-variable that is only applied to some (not all) of the
+// available locally bound variable will only match expressions
+// that depend on the provided locally bound variables
+constant : (Nat -> Nat) -> Nat;
+: constant (x => C) --> z;
+#CHECK            constant (x => z) == z;
+#CHECK            constant (x => x) != z;
+#CHECK a : Nat |- constant (x => a) == z;
+
+// Note: instances of nameless meta-variables `*` are always assumed
+// applied to all available locally bound variables.
+zero : (Nat -> Nat) -> Nat;
+: zero (x => *) --> z;
+#CHECK            zero (x => z) == z;
+#CHECK            zero (x => x) == z;
+#CHECK a : Nat |- zero (x => a) == z;
+
+// Parameters can be added to declared or defined symbols
+f (t:Ty) (x:T t) : T (arr t t):= lam t t (z => x);
+#EVAL f;
+#INFER f;
+
+#EVAL  a:Ty, z:T a |- f a z;
+#INFER a:Ty, z:T a |- f a z;
+
+// Symbols can be declared constant after their declaration
+// to better control when their injectivity is needed to typecheck rules
+#CONST s;
+
+
+// Symbols can also be declared "injective" with the `#INJECTIVE` command.
+// This forbids it to be *further* rewritten (it may already have rules).
+// Note that the injectivity is assumed (for now) and not checked.
+#INJECTIVE f;
+
+// TODO : A symbol can be introduced as a required proof of a theorem using `#THM`.
+// There must be exactly one rewrite rule rewriting such a symbol and the LHS
+// of this rule must be the unapplied symbol.
+// A file will be marked as failure if no such rule is provided.
+// The symbol is considered outside of the signature (ill-typed) until it is defined.
+#THM thm1 : Nat;
+: thm1 --> z;
+// The proof term may be provided right away with `:=`.
+#THM thm2 : Nat -> Nat  :=  x:Nat => x;
+
+// The `#PRINT` command allows to print a term
+#PRINT constant (x => z);
+
+// The `#DTREE` command allows to show the decision trees used to compute a symbol.
+// Decision trees are computed lazily (and erased eagerly).
+// Only the decision trees that were already needed will show.
+#DTREE zero;
+
+// The `#TIME` command shows current date and time as well as the time elapsed
+// since the previous `#TIME` command.
+// Useful for timing type checking or computations.
+#TIME;
+
+// Tired of being told your rules are not type preserving ?
+// Just skip this check and add them with the unsafe rule definition `==>`.
+// > The rule must still be well-formed
+// > Injective or constant symbols may still not be rewritten
+// Note : please don't do anything serious that relies on this feature...
+: zero ==> z;
+
+// Import modules with the `#REQUIRE` command.
+// This is equivalent to the module being copied/pasted here
+#REQUIRE tests/basics;
+#EVAL fummy;
+
+// An alias can be provided to prefix all imported symbols with a namespace
+#REQUIRE theories/FOL[fol];
+// Symbols in this module can be referred with `new_name.smb`.
+#EVAL fol.not;
+// Note that (for now) the same module can be imported twice with distinct names.
+
+// `#REQUIRE` also allows to check and import ressources from any third party servers
+#REQUIRE "https://gaspi.github.io/dedukti-js/examples/theories/pure_lambda_calculus.dk"[lc];
+#INFER lc.lam;
+// Note : beware of CORS headers preventing such ressource to be received by the webpage.

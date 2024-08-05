@@ -14,6 +14,7 @@
     "@popperjs/core": "^2.11.8",
     "@types/moo": "^0.5.9",
     "bootstrap": "^5.3.3",
+    "codejar": "^4.2.0",
     "codemirror": "^6.0.1",
     "nearley": "^2.20.1",
     "vue": "^3.4.35"

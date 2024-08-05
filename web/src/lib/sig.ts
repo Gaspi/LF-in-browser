@@ -1,6 +1,21 @@
-type Message = { status:'ok'|'info'|'warn', title:string, msg:string, ins?: Instruction[] };
+import { fail, debug } from './utils.ts';
+import {
+  Instruction, Term, Rew, Rule,
+  Knd, All, Ref,
+  subst
+} from './term.ts';
+import { pp_term, pp_context,  } from './pp.ts';
+import { pp_dtrees } from './dtree.ts';
+import { Ctxt, Ctx, extend, get_term } from './context.ts';
+import { Environment } from './env.ts';
+import { ReductionEngine } from './red.ts';
+import { RuleChecker } from './rulechecker.ts';
 
-class Signature {
+
+
+export type Message = { status:'ok'|'info'|'warn', title:string, msg:string, ins?: Instruction[] };
+
+export class Signature {
   start_time: Date;
   time: Date;
   env: Environment;

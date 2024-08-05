@@ -1,0 +1,59 @@
+
+.dropdown-menu li {
+  position: relative;
+}
+
+.dropdown-menu .dropdown-submenu {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: -7px;
+}
+
+.dropdown-menu .dropdown-submenu-left {
+  right: 100%;
+  left: auto;
+}
+
+.dropdown-menu > li:hover > .dropdown-submenu {
+  display: block;
+}
+
+
+.KW { background-color:#E0F7FA; }
+.COMMENT   { color:gray; }
+.DOT       { color:darkgreen; font-weight:bold; }
+.COMMA     { color:blue; font-weight:bold; }
+.ARROW     { color:blue; }
+.FATARROW  { color:blue; }
+.LONGARROW { color:blue; }
+.LONGFATARROW { color:blue; }
+.DEF       { color:blue; font-weight:bold; }
+.ENT       { color:blue; }
+.CONV      { color:blue; }
+.NCONV     { color:blue; }
+.COLON     { color:blue; font-weight:bold }
+.LEFTSQU   { color:blue; }
+.RIGHTSQU  { color:blue; }
+.LEFTBRA   { color:blue; }
+.RIGHTBRA  { color:blue; }
+.LEFTPAR   { color:blue; }
+.RIGHTPAR  { color:blue; }
+.JOKER     { color:blue; }
+.END       { color:blue; font-weight:bold; }
+.TYPE      { color:darkgreen; font-weight:bold; }
+.KIND      { color:red; font-weight:bold; }
+.CMD_REQ   { color:blue; font-weight:bold; }
+.CMD_EVAL  { color:blue; font-weight:bold; }
+.CMD_INFER { color:blue; font-weight:bold; }
+.CMD_CHECK { color:blue; font-weight:bold; }
+.CMD_PRINT { color:blue; font-weight:bold; }
+.CMD_CONST { color:blue; font-weight:bold; }
+.CMD_INJ   { color:blue; font-weight:bold; }
+.CMD_THM   { color:blue; font-weight:bold; }
+.CMD_DTREE { color:blue; font-weight:bold; }
+.CMD_TIME  { color:blue; font-weight:bold; }
+.QID       { color:black; }
+.ID        { color:black; }
+.DB_INDEX  { color:red; }
+

@@ -1,9 +1,10 @@
-
-import * as fs from 'node:fs';
-import grammar from './grammar'
+import { readFileSync } from 'fs';
+import { Parser, Grammar } from 'nearley';
+import grammar from './lib/grammar.ts';
+import { Signature, Message } from './lib/sig.ts';
 
 // Create a Parser object from our grammar.
-const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
+const parser = new Parser(Grammar.fromCompiled(grammar));
 const initial_state = parser.save();
 
 // Convert a string to a series of instructions
@@ -15,7 +16,7 @@ function parse(code:string) {
 
 function load_module(module_name:string) {
   try {
-    return parse( fs.readFileSync(`examples/${module_name}.dk`, 'utf8') );
+    return parse( readFileSync(`examples/${module_name}.dk`, 'utf8') );
   } catch (err) {
     console.error(err);
   }

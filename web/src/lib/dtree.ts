@@ -4,7 +4,15 @@
  * 
  */
 
-type ExRule = Rule &  { head:string, stack:any[] };
+import { fail } from './utils.ts';
+import {
+  Rule, Term,
+  Joker,
+  get_head
+} from './term.ts';
+import { pp_term } from './pp.ts';
+
+export type ExRule = Rule &  { head:string, stack:any[] };
 
 type RuleRow = { rule:ExRule, cols:Term[]}
 type RuleMatrix = { rows: RuleRow[], depths: number[] }
@@ -18,7 +26,7 @@ type DTreeTest = {
   joker_match: boolean
 }
 
-type DTreeNode = {
+export type DTreeNode = {
   c:'Switch',
   index:number,
   Lam ?: DTreeNode,
@@ -32,7 +40,7 @@ type DTreeNode = {
   def:DTreeNode
 } | null
 
-type DTree = {
+export type DTree = {
   c:'DTree',
   arity: number,
   tree: DTreeNode | null
@@ -65,7 +73,7 @@ function compute_row(rule:ExRule, arity:number) : RuleRow {
  * @return
  *   A reduction decision tree ready to be used.
  */
-function compute_decision_tree(rules:ExRule[], arity:number) : DTree {
+export function compute_decision_tree(rules:ExRule[], arity:number) : DTree {
   if (rules.length==0) { fail("DTree","Cannot compute decision tree for an empty set of rules."); }
   const mismatch = rules.find( (r) => r.head != rules[0].head );
   if (mismatch) { fail("DTree","Head symbol mismatch found: ["+mismatch.head+"] != ["+rules[0].head+"]."); }
@@ -142,7 +150,7 @@ function specialize_row(cols:Term[], j:number, cons:string|null, name:string|num
 }
 
 function specialize(m:RuleMatrix, j:number, cons:string|null, index:number|string|null, extra_cols:number) : DTreeNode {
-  const rows = [];
+  const rows : RuleRow[] = [];
   for (let i = 0; i < m.rows.length; i++) {
     const cols = specialize_row(m.rows[i].cols,j,cons,index,extra_cols);
     if (cols) {
@@ -199,7 +207,7 @@ function compute_matching_problem(row:RuleRow, depths:number[], def:DTreeNode = 
 }
 
 
-function pp_dtrees(dtrees: (DTree|null)[]) {
+export function pp_dtrees(dtrees: (DTree|null)[]) {
   let res = "Count arguments:\n";
   function pp(t:number, s:string) { res += '  '.repeat(t)+s+"\n"; }
   function pp_dtree(dtree:DTreeNode, t:number) {

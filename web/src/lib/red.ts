@@ -1,5 +1,16 @@
+
+
+import { fail } from './utils.ts';
+import {
+  Rule, Term,
+  All, Lam, App, Var, MVar,
+  shift, get_head, equals, same_head
+} from './term.ts';
+import { DTree, DTreeNode, ExRule, compute_decision_tree } from './dtree.ts';
+import { pp_term } from './pp.ts';
+
 function filter_rules(rules:ExRule[], arity:number) : [ExRule[], number] {
-  const res = [];
+  const res : ExRule[] = [];
   let max = -1;
   for (let i = 0; i < rules.length; i++) {
     const ar = rules[i].stack.length;
@@ -479,7 +490,7 @@ type SmbRules = {
   injective:boolean
 }
 
-class ReductionEngine {
+export class ReductionEngine {
   red: Map<string,SmbRules> = new Map();
 
   // Get info about a symbol (adds a new entry if needed)

@@ -1,0 +1,49 @@
+
+// Type of types
+T : Type;
+eT : T -> Type;
+
+// `type` constructors
+#CONST bool : T;
+#CONST arrow : T -> T -> T;
+
+// Type of propositionnal types
+P : Type;
+eP : P -> Type;
+
+// Propositions constructors
+#CONST p : T -> P;
+#CONST forallK : (T -> P) -> P;
+
+// Type of boolean types
+B : Type := eT bool;
+eB : B -> Type;
+
+// Propositions constructors
+#CONST impl : B -> B -> B;
+#CONST forall : t:T -> (eT t -> B) -> B;
+#CONST forallP : (T -> B) -> B;
+
+// Computations
+: eT --> t => eP (p t);
+: eP (p (arrow l r)) --> eT l -> eT r;
+: eP (forallK f) --> x : T -> eP (f x);
+: eB (forall t f) --> x:eT t -> eB (f x);
+: eB (impl l r) --> eB l -> eB r;
+: eB (forallP f) --> x:T -> eB (f x);
+
+// Proofs
+#THM leibniz : eP (forallK (X:T => p (arrow X (arrow X bool)))) :=
+    X:T  =>
+    x:eT X =>
+    y:eT X =>
+    forall (arrow X bool) (P => impl (P x) (P y));
+
+#THM refl : eB (forallP (X => forall X (x:eT X => leibniz X x x))) :=
+    X:T  =>
+    x:eT X =>
+    P:eT (arrow X bool) =>
+    p:eB (P x) => p;
+
+sym_leibniz : eB (forallP (X:T => forall X (x:eT X => forall X (y:eT X => impl (leibniz X x y) (leibniz X y x)))));
+

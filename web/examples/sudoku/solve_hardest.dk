@@ -1,0 +1,18 @@
+
+#REQUIRE sudoku/sudoku;
+
+hard_sudoku :=
+  c (l 8 X X   X X X   X X X)
+    (l X X 3   6 X X   X X X)
+    (l X 7 X   X 9 X   2 X X)
+
+    (l X 5 X   X X 7   X X X)
+    (l X X X   X 4 5   7 X X)
+    (l X X X   1 X X   X 3 X)
+
+    (l X X 1   X X X   X 6 8)
+    (l X X 8   5 X X   X 1 X)
+    (l X 9 X   X X X   4 X X);
+
+// Should solve in 20min
+#EVAL solve_sudo hard_sudoku;
